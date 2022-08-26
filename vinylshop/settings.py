@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "account",
+    "product",
     "crispy_forms"
 ]
 
@@ -126,7 +127,7 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_URL = 'account/login'
+LOGIN_URL = '/account/login/'
 
 LOGIN_REDIRECT_URL = ''
 

@@ -1,4 +1,5 @@
 {% load static%}
+{% load static user_tags %}
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,8 +14,11 @@
     <title>VinylShop - {% block title %}{% endblock title %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="{% url 'homepage' %}">Vinyl Store</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+      <a class="navbar-brand" href="{% url 'homepage' %}">
+        <img src="{%static 'img/1200px-Vinyl_record.svg.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        RecordStore
+      </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -26,13 +30,51 @@
           </li>
          
         </ul>
-        <div class="form-inline my-2 my-lg-0">
-          <a href="{% url 'account:login' %}"class="btn btn-warning">Login</a>
-        </div>
+        {% if user.is_authenticated %}
+          {% if request.user|has_group:'vendors' %}
+          <div class="form-inline my-2 my-lg-0">
+            <a href="{% url 'account:login' %}"class="btn btn-warning">My Sales</a>
+          </div>
+
+          {% endif %}
+          <li class="nav-item dropdown">
+            <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Ciao {{user.username}} <b class="caret"></b></a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">I miei ordini</a>
+                {% if request.user|has_group:'vendors' %}
+                  <a class="dropdown-item" href="#">Le mie vendite</a>
+                {% endif %}
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
+            </div>
+          </li>
+        {% else %}
+
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'account:register' %}">Sign Up</a>
+              </li>
+              <li class="nav-item">
+                  <a class="btn btn-primary" href="{% url 'account:login' %}">Login</a>
+              </li>
+          </ul>
+      </div>
+        {% endif %}
+        {% comment %} <div class="form-inline my-2 my-lg-0">
+          <a href="{% url 'account:register' %}"class="btn btn-warning">Sign Up</a>
+        </div> {% endcomment %}
       </div>
     </nav>
     <section class="section">
       <div class="container">
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+            {{ message }}
+          </div>
+        </div>
+        {% endfor %}
         {% block content %}
       
         {% endblock content %}
@@ -42,7 +84,7 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
   </body>
 </html>
