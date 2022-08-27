@@ -1,4 +1,4 @@
-{% load static%}
+{% load static %}
 {% load static user_tags %}
 <!doctype html>
 <html lang="en">
@@ -31,18 +31,12 @@
          
         </ul>
         {% if user.is_authenticated %}
-          {% if request.user|has_group:'vendors' %}
-          <div class="form-inline my-2 my-lg-0">
-            <a href="{% url 'account:login' %}"class="btn btn-warning">My Sales</a>
-          </div>
-
-          {% endif %}
           <li class="nav-item dropdown">
-            <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Ciao {{user.username}} <b class="caret"></b></a>
+            <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Hi {{user.username}} <b class="caret"></b></a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="#">I miei ordini</a>
                 {% if request.user|has_group:'vendors' %}
-                  <a class="dropdown-item" href="#">Le mie vendite</a>
+                  <a class="dropdown-item" href="{% url 'account:my_sales' %}">Le mie vendite</a>
                 {% endif %}
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
@@ -68,13 +62,6 @@
     </nav>
     <section class="section">
       <div class="container">
-        {% for message in messages %}
-        <div class="container-fluid p-0">
-          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-            {{ message }}
-          </div>
-        </div>
-        {% endfor %}
         {% block content %}
       
         {% endblock content %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+{% block title %}My sales{% endblock %}
+
+{% block content %}
+
+    <h1 class="mb-4">My sales</h1>
+    {% if not object_list %}
+        No sales yet
+    {% endif %}
+    <div class="list-group">
+        {% for product in object_list %}
+            <div class="list-group-item">
+                <label class="font-weight-bold">{{ product.title }}</label> -
+                <label class="text-muted">{{ product.price }}</label>
+            </div>
+        {% endfor %}
+    </div>
+    <div>
+        <a href="{% url 'product:create_product' %}">
+            <button class="btn btn-primary mt-3">Add Sale</button>
+        </a>
+    </div>
+
+{% endblock %}

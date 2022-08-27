@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+    <h1 class="text-center">New Products</h1>
+    {% for product in object_list %}
+    <div class="col-3">
+        <div class="card mb-4">
+            <img height="200px" src="{{ product.image.url }}" class="card-img-top" style="object-fit: cover">
+            
+            <div class="card-body">
+                <h5 class="card-title">{{ product.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ product.price }} €</h6>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+{% endblock %}
+

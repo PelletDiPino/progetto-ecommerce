@@ -7,5 +7,6 @@ from django.conf import settings
 urlpatterns = [
     re_path(r'^$|^/$|home/', home, name='homepage'),
     path("admin/", admin.site.urls),
-    path('account/', include('account.urls'))
+    path("account/", include('account.urls')),
+    path("product/",include('product.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

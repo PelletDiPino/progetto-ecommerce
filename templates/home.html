@@ -3,7 +3,12 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-    <h1>Homepage</h1>
-    <p>{% lorem %}</p>
+    {% if user.is_authenticated %}
+    <h1>Welcome, {{user.username}}!</h1>
+    {% else %}
+    <h1>Welcome!</h1>
+    {% endif %}
+    <br>
+    <a href="{% url 'product:list_products' %}" class="btn btn-info">Visualizza i prodotti</a>
 {% endblock %}
 

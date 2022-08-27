@@ -1,3 +1,4 @@
+from braces.views import GroupRequiredMixin
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
@@ -42,3 +43,15 @@ class UserLogin(LoginView):
 class UserLogout(LogoutView):
     template_name = 'account/logout.html'
     next_page = reverse_lazy('homepage')
+
+
+class MySales(GroupRequiredMixin, ListView):
+
+    raise_exception = True
+    group_required = ["vendors"]
+
+    model = Product
+    template_name = 'account/my_sales.html'
+
+    def get_queryset(self):
+        return Product.objects.all().filter(vendor=self.request.user)
