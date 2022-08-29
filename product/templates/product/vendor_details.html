@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dettagli {{ object }}{% endblock title %}
+
+{% block content %}
+    <h1 class="title">
+        {{ object }}
+    </h1>
+    <div>
+        {{ object.email }}
+    </div>
+    <div>
+        Average Rating: {{average_rating}}&#9733;
+    </div>
+
+    <br>
+    {% if request.user.is_authenticated %}
+        
+            <a href="{% url 'product:vendor_review' object.pk%}">
+                <div>
+                    <button class="btn btn-outline-info">Leave a review!</button>
+                </div>
+            </a>
+            
+    {% endif %}
+
+{% endblock content %}
+

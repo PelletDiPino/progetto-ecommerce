@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_filters %}
+
+{% block title %}Review{% endblock %}
+
+{% block content %}
+    {% if vendor is not None %}
+        <form method="POST" action="{% url 'product:vendor_review' vendor %}"> {% csrf_token %}
+    {% else %}
+        <form method="POST" action="{% url 'product:product_review' product %}"> {% csrf_token %}
+    {% endif %}
+        {{ form | crispy }}
+        <button class="button-link">
+            <span class="circle" aria-hidden="true">
+                <span class="icon arrow"></span>
+            </span>
+            <span class="button-text"> Vota </span>
+        </button>
+    </form>
+{% endblock content %}
