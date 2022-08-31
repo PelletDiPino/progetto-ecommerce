@@ -1,3 +1,5 @@
+from math import prod
+from unicodedata import category
 from django.utils import timezone
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect
@@ -8,6 +10,7 @@ from .forms import ProductForm, ProductReviewForm, VendorReviewForm
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 
 # Create your views here.
 
@@ -167,3 +170,9 @@ def add_order(request,slug):
 
     return redirect('product:product_details', slug)
 
+
+def search(request):
+    query = request.GET.get('query','')
+    products = Product.objects.filter(Q(title__icontains=query) | Q(category__title__icontains=query) | Q(description__icontains=query))
+    
+    return render(request, 'product/search.html', {'products':products, 'query':query})

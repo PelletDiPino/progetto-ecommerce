@@ -28,18 +28,18 @@
           <li class="nav-item active">
             <a class="nav-link" href="{% url 'homepage' %}">Home <span class="sr-only">(current)</span></a>
           </li>
+        
         </ul>
-        <form class="form-inline mr-auto">
-          <input class="form-control mr-sm-2 barra" type="search" placeholder="Search" aria-label="Search">
+        <form method="GET" class="form-inline mr-auto" action="{% url 'product:search' %}">
+          <input class="form-control mr-sm-2" name="query" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         
-        
         {% if user.is_authenticated %}
         
-          <li class="nav-item dropdown">
-            <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"> Hi {{user.username}} <b class="caret"></b></a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+           <li class="nav-item dropdown list-unstyled">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-toggle="dropdown"><strong>{{user}}</strong></a>
+            <div class="dropdown-menu">
               <a class="dropdown-item" href="#">I miei ordini</a>
                 {% if request.user|has_group:'vendors' %}
                   <a class="dropdown-item" href="{% url 'account:my_sales' %}">Le mie vendite</a>
@@ -47,10 +47,10 @@
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
             </div>
-          </li>
+          </li> 
         {% else %}
 
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <div>
           <ul class="navbar-nav ml-auto">
               <li class="nav-item">
                   <a class="nav-link" href="{% url 'account:register' %}">Sign Up</a>

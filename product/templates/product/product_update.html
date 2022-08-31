@@ -5,7 +5,7 @@
 
 {% block content %}
     <h1>Modifica prodotto</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy}}
         <a href="{% url 'account:my_sales' %}" class="btn btn-outline-secondary">Annulla</a>

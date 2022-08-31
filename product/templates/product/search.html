@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Cerca{% endblock %}
+
+{% block content %}
+<br>
+<div class="text-center">
+    <h3>Risultati per: "{{query|lower}}"</h3>
+</div>
+<div class="row">
+    {% for product in products %}
+    <div class="col-lg-3">
+        <div class="box-element product">
+            <a href={% url 'product:product_details' product.slug %}><img src="{{ product.image.url }}" class="card-img-top" style="height:12vw; object-fit: scale-down;"></a>
+            <div class="card-body">
+                <h6 class="card-title">{{ product.title }}</h6>
+                <h6 class="card-subtitle mb-2 text-muted">€ {{ product.price }} </h6>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock  %}
+
