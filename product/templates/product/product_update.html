@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %} - Update{% endblock title %}
+
+{% block content %}
+    <h1>Modifica prodotto</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy}}
+        <a href="{% url 'account:my_sales' %}" class="btn btn-outline-secondary">Annulla</a>
+        <input type="submit" value="Aggiorna" class="btn btn-outline-primary">
+    </form>
+{% endblock content %}

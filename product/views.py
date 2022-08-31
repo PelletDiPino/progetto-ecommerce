@@ -1,17 +1,17 @@
+from django.utils import timezone
 from django.views.generic.list import ListView
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, DetailView, View
+from django.views.generic import CreateView, DetailView, DeleteView, UpdateView
 from braces.views import GroupRequiredMixin
-from .models import Product, ProductReview, VendorReview
+from .models import Product, ProductReview, VendorReview, Order
 from .forms import ProductForm, ProductReviewForm, VendorReviewForm
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
 class CreateProduct(GroupRequiredMixin, CreateView):
-
     raise_exception = True
     group_required = ["vendors"]
     form_class = ProductForm
@@ -23,6 +23,21 @@ class CreateProduct(GroupRequiredMixin, CreateView):
         form.instance.vendor_id = self.request.user.id
         return super().form_valid(form)
 
+class ProductDelete(GroupRequiredMixin, DeleteView):
+    raise_exception = True
+    group_required = ["vendors"]
+    model = Product
+    template_name = 'product/product_delete.html'
+    success_url = reverse_lazy('account:my_sales')
+
+
+class ProductUpdate(GroupRequiredMixin, UpdateView):
+    raise_exception = True
+    group_required = ["vendors"]
+    form_class = ProductForm
+    model = Product
+    template_name = 'product/product_update.html'
+    success_url = reverse_lazy('account:my_sales')
 
 class ProductsListView(ListView):
     model = Product
@@ -36,16 +51,17 @@ class ProductDetails(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
-        context['is_reviewed'] = False
-
+        context['already_reviewed'] = False
+        context['my_review'] = None
         try:
             if self.request.user.is_authenticated:
-                productId = self.get_object().id
-                userId = User.objects.get(username=self.request.user).id
-                review = ProductReview.objects.get(product_id=productId, user_id=userId)
+                product = self.get_object().id
+                user_id = User.objects.get(username=self.request.user).id
+                review = ProductReview.objects.get(product_id=product, writer_id=user_id)
 
                 if review:
-                    context['is_reviewed'] = True
+                    context['my_review'] = review
+                    context['already_reviewed'] = True
         except:
             pass
 
@@ -132,3 +148,22 @@ def vendorReview(request, pk):
             return redirect("product:vendor_details", pk)
 
     return render(request, template_name=template, context=ctx)
+
+
+
+class BuyProduct(LoginRequiredMixin, DetailView):
+    success_url = reverse_lazy('product:product_details')
+    template_name = 'product/product_buy.html'
+    model = Product
+
+
+def add_order(request,slug):
+    order = Order(
+            customer = User.objects.get(id=request.user.id),
+            product = Product.objects.get(slug=slug),
+            created_at = timezone.now(),
+        )
+    order.save()
+
+    return redirect('product:product_details', slug)
+

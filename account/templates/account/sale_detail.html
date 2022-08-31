@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ object.title }} - sale details{% endblock title %}
+
+
+{% block content %}
+    <br>
+    <h3>
+        Prodotto:
+       {{ object.title }}
+    </h3>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            
+            <div>
+                <img height="200px" src="{{ object.image.url }}" style="object-fit: cover"> 
+            </div>
+            <div class="m-lg-3">
+                <h4>Prezzo attuale: € {{ object.price }}</h4>
+                <h6>Vendite totali: {{sold_products}}</h6>
+                <h6>Guadagno totale: € {{total_income}}</h6>
+                <a href="{% url 'account:product_update' object.slug%}" class="btn btn-outline-primary mt-5">Modifica la vendita</a>
+            </div>
+        </div>
+        
+        <br>
+        <br>
+        <h5><strong>Descrizione prodotto:</strong></h5>
+        <p> {{ object.description }} </p> 
+        <br>
+        
+        <br><br><strong>Category</strong>: {{ object.category }}<br><br>
+        
+        Rating: 
+        {% if object.get_average_score == 0 %}
+            no ratings yet!
+            {% else %}
+            {{object.get_average_score}}/5&#9733;
+        {% endif %}
+        <br><br>
+    
+            <br>
+            {% if object.get_average_score != 0 %}
+            <h3 class="text-info">Recensioni</h3>
+            {% else %}
+            <h4>Ancora nessuna recensione</h4>
+            {% endif %}
+            <br>    
+            <section>
+            {% for score in object.get_reviews %}
+                <div class="container card border-dark">
+                    <div>{{score.writer}}</div>
+                    <div>{{score.created_at|date:"d F Y"}}</div>
+                    <div>{{ score.stars }}/5&#9733;</div><br>
+                    <div>{{ score.text }}</div><br>
+                </div>
+                <br>
+            {% endfor %}
+            </section>
+        <br><br><br><br><br><br>
+    </div>
+
+{% endblock content %}

@@ -3,12 +3,12 @@ from django.contrib.auth import login, authenticate
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from account.forms import UserCreationCustomForm
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
 from django.urls import reverse_lazy
-from product.models import Product
+from product.models import Order, Product
 
 
 class UserCreateView(CreateView):
@@ -49,9 +49,26 @@ class MySales(GroupRequiredMixin, ListView):
 
     raise_exception = True
     group_required = ["vendors"]
-
     model = Product
     template_name = 'account/my_sales.html'
 
     def get_queryset(self):
         return Product.objects.all().filter(vendor=self.request.user)
+
+  
+class MySalesDetails(GroupRequiredMixin, DetailView):
+    raise_exception = True
+    group_required = ["vendors"]
+    model = Product
+    template_name = 'account/sale_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        prod_id = self.get_object().id
+        orders = Order.objects.filter(product_id=prod_id)
+
+        context['sold_products'] = len(orders)
+        context['total_income'] = context['sold_products']*self.get_object().price
+
+        return context

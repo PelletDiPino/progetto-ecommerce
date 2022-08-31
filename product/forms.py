@@ -8,6 +8,7 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ['title', 'description', 'price', 'image', 'category']
 
+
 class VendorReviewForm(forms.Form):
     CHOICE_LIST = [(i,i) for i in range(1,6)]
     review_value = forms.ChoiceField(
@@ -15,6 +16,7 @@ class VendorReviewForm(forms.Form):
         required=True,
         choices=CHOICE_LIST
     )
+
 
 class ProductReviewForm(forms.Form):
     CHOICE_LIST = [(i,i) for i in range(1,6)]

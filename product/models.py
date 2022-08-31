@@ -68,6 +68,13 @@ class ProductReview(Review):
     text = models.CharField(max_length=512, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
 class VendorReview(Review):
     vendor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="vendor")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Order(models.Model):
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)

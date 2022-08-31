@@ -12,8 +12,10 @@
     <div class="list-group">
         {% for product in object_list %}
             <div class="list-group-item">
-                <label class="font-weight-bold">{{ product.title }}</label> -
+                <label class="font-weight-bold"><a href="{% url 'account:sale_detail' product.slug%}">{{ product.title }}</a></label> -
                 <label class="text-muted">{{ product.price }}</label>
+                
+                <a href="{% url 'product:delete_product' product.slug %}" class="float-right btn btn-danger ml-5">Remove</a>
             </div>
         {% endfor %}
     </div>

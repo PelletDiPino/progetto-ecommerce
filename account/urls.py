@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import *
-from django.contrib.auth import views as auth_views
+from .views import UserCreateView, UserLogin, UserLogout, MySales, MySalesDetails
+from product.views import ProductUpdate
 
 app_name = 'account'
 
@@ -9,4 +9,6 @@ urlpatterns = [
     path("login/", UserLogin.as_view(), name="login"),
     path("logout/", UserLogout.as_view(), name="logout"),
     path("mysales/", MySales.as_view(), name="my_sales"),
+    path("mysales/<slug:slug>/detail", MySalesDetails.as_view(), name="sale_detail"),
+    path("mysales/<slug:slug>/update", ProductUpdate.as_view(), name="product_update"),
 ]

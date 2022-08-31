@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Delete product{% endblock title %}
+
+{% block content %}
+    <br>
+    <h5>You are about to remove this product from your sales:</h5>
+    <div class="card">
+        <h6>{{ object.title }}</h6>
+        <h6>€ {{object.price}}</h6>
+        <h6>Category: {{ object.category }}</h6>
+        <p>{{ object.description }}</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form | crispy}}
+        <br>
+        <a href="{% url 'account:my_sales' %}" class="btn btn-outline-secondary">Annulla</a>
+        <input type="submit" value="Elimina" class="btn btn-outline-danger">
+    </form>
+{% endblock content %}
