@@ -6,12 +6,13 @@
 <br>
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{% url 'product:list_products' %}">Products</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'product:list_products' %}">Prodotti</a></li>
     <li class="breadcrumb-item active" aria-current="page">Search</li>
     </ol>
 </nav>
 <div class="text-center">
-    <h3>Risultati per: "{{query|lower}}"</h3>
+    <h4>Categoria: "{{category}}"</h4>
 </div>
 <div class="row">
     {% for product in products %}

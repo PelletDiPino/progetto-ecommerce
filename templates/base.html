@@ -26,10 +26,16 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="{% url 'homepage' %}">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="{% url 'homepage' %}">Home</a>
           </li>
-        
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'product:categories' %}">Categorie</a>
+          </li>
         </ul>
+        <ul class="navbar-nav">
+          
+        </ul>
+        
         <form method="GET" class="form-inline mr-auto" action="{% url 'product:search' %}">
           <input class="form-control mr-sm-2" name="query" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
@@ -40,7 +46,7 @@
            <li class="nav-item dropdown list-unstyled">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-toggle="dropdown"><strong>{{user}}</strong></a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">I miei ordini</a>
+              <a class="dropdown-item" href="{% url 'product:vendor_details' user.id%}">Account e Info</a>
                 {% if request.user|has_group:'vendors' %}
                   <a class="dropdown-item" href="{% url 'account:my_sales' %}">Le mie vendite</a>
                 {% endif %}
@@ -66,13 +72,20 @@
         </div> {% endcomment %}
       </div>
     </nav>
-    <section class="section">
-      <div class="container">
+    
+   
+    <div class="row">
+      <div class="col-2">{% block left_section %}{% endblock left_section %}</div>
+      <div class="col-7">
+        {% include 'messages.html' %}
         {% block content %}
       
         {% endblock content %}
       </div>
-    </section>
+      <div class="col-2">{% block right_section %}{% endblock right_section %}</div>
+    </div>
+      
+
     
 
     <!-- Optional JavaScript -->

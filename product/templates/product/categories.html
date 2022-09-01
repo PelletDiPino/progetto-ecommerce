@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+
+    <h2>Categorie</h2>
+    <br>
+    <div class="row">
+        {% for category in object_list %}
+        <div class="col-lg-3">
+            <div>
+                <a class="btn btn-outline-info" href="{% url 'product:category_filter' category.slug %}">{{ category.title }}</a>
+            </div>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+        
+{% endblock %}
+

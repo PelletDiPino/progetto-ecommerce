@@ -3,8 +3,48 @@
 
 {% block title %}Products{% endblock %}
 
+
+{% block left_section %}
+    <div class="card mt-4 ml-2">
+        <h6 class="card-header">Prezzo</h6>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <form method="GET" action="{% url 'product:price_search' %}">
+                    <input name="min_price" type="number" min="0" placeholder="Min">
+                    <input name="max_price" type="number" placeholder="Max">
+                    <button class="btn btn-outline-info" type="submit">Go</button>
+                </form>
+            </li>
+            
+        </ul>
+        
+    </div>
+    <br>
+    <div class="card mt-4 ml-2">
+        <h6 class="card-header">Categorie</h6>
+        <ul class="list-group">
+            <li class="list-group-item">
+                    {% for category in categories %}
+                        <a href="{% url 'product:category_filter' category.slug%}">{{category.title}}</a>
+                        <br>
+                    {% endfor %}
+                </form>
+            </li>
+            
+        </ul>
+        
+    </div>
+{% endblock %}
+
 {% block content %}
-    <h1>New products</h1>
+<br>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Prodotti</li>
+    </ol>
+</nav>
+    <h2>Newest products</h2>
     <br>
     <div class="row">
         {% for product in object_list %}
@@ -16,9 +56,11 @@
                     <h6 class="card-subtitle mb-2 text-muted">€ {{ product.price }} </h6>
                 </div>
             </div>
+            <br>
         </div>
+        
         {% endfor %}
     </div>
-        
+    
 {% endblock %}
 

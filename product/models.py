@@ -22,6 +22,12 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     date_added = models.DateTimeField(auto_now_add=True)
     image = models.ImageField()
+
+    class Meta:
+        ordering = ['-date_added']
+
+    def __str__(self):
+        return self.title
     
     def get_reviews_num(self):
         reviews = ProductReview.objects.filter(product=self)
