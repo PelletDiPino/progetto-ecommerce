@@ -52,7 +52,6 @@ class ProductsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
-
         return context
 
 class CategoryListView(ListView):
@@ -75,7 +74,8 @@ class ProductDetails(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        
+        similar_items = Product.objects.filter(category_id=self.get_object().category_id).exclude(id=self.get_object().id)
+        context['similar_items'] = similar_items
         context['already_reviewed'] = False
         context['my_review'] = None
         try:
@@ -156,8 +156,8 @@ def vendorReview(request, pk):
     template = 'product/product_review.html'
     ctx = {
         'form': VendorReviewForm(),
-        "message": '',
-        "vendor": pk
+        'vendor': pk
+
     }
 
     if request.method == "POST":
