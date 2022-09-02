@@ -5,17 +5,20 @@
 {% block title %}Review{% endblock %}
 
 {% block content %}
+<br>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'product:list_products' %}">Prodotti</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Recensione</li>
+        </ol>
+    </nav>
     {% if vendor is not None %}
         <form method="POST" action="{% url 'product:vendor_review' vendor %}"> {% csrf_token %}
     {% else %}
         <form method="POST" action="{% url 'product:product_review' product %}"> {% csrf_token %}
     {% endif %}
         {{ form | crispy }}
-        <button class="button-link">
-            <span class="circle" aria-hidden="true">
-                <span class="icon arrow"></span>
-            </span>
-            <span class="button-text"> Vota </span>
-        </button>
+        <input type="submit" value="Confirm" class="btn btn-outline-success">
     </form>
 {% endblock content %}

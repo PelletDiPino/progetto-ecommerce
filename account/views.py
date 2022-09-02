@@ -1,3 +1,5 @@
+from audioop import avg
+from collections import Counter
 from braces.views import GroupRequiredMixin
 from django.contrib.auth import login, authenticate
 from django.contrib import messages
@@ -8,7 +10,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User, Group
 from django.urls import reverse_lazy
-from product.models import Order, Product
+from product.models import Category, Order, Product, VendorReview
 
 
 class UserCreateView(CreateView):
@@ -72,3 +74,56 @@ class MySalesDetails(GroupRequiredMixin, DetailView):
         context['total_income'] = context['sold_products']*self.get_object().price
 
         return context
+
+
+class AccountDetails(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = 'account/account_info.html'
+
+    def get_object(self):
+        return self.request.user
+
+
+class AccountVendorDetails(GroupRequiredMixin, DetailView):
+    raise_exception = True
+    group_required = ["vendors"]
+    model = User
+    template_name = 'account/vendor_stats_details.html'
+
+    def get_object(self):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        
+        orders = Order.objects.all()
+
+        orders_prices = []
+        titles_list = []
+        for order in orders:
+            orders_prices.append(order.product.price)
+            titles_list.append(order.product.category.title)
+        
+        context['avg_spent'] = round(sum(orders_prices) / len(orders_prices),2)
+        context['title_list'] = titles_list
+
+        title_count = Counter(titles_list)
+
+        context['most_purchased_category'] = title_count.most_common(1)[0][0]
+
+        num_reviews = 0
+        total_score = 0
+        
+        total_vendor_reviews = VendorReview.objects.filter(vendor_id=self.get_object().id)
+        context['total_vendor_reviews'] = len(total_vendor_reviews)
+
+        for review in VendorReview.objects.filter(vendor_id=self.get_object().id):
+            num_reviews += 1
+            total_score += review.stars
+        try:
+            context['average_rating'] = int(total_score/num_reviews)
+        except:
+            context['average_rating'] = 0
+
+
+        return context 

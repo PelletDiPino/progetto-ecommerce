@@ -51,14 +51,17 @@
             {{object.get_average_score}}/5<span style="color:#ff9900">&#9733;</span> ({{object.get_reviews_num}})
         {% endif %}
         <br><br><br>
-        {% if similar_items|length != 0 %}
+        {% if similar_items|length != 0 and request.user.is_authenticated%}
         <h4 style="color:orange"><strong>Confronta con prodotti simili</strong> </h4>
         <table class="table">
             <thead>
               <tr>
                 <th scope="col"></th>
                 {% for item in similar_items %}
-                    <th scope="col"><img height="150px" src="{{ item.image.url }}" style="object-fit: cover"> </th>
+                    <th scope="col">
+                        <a href="{% url 'product:product_details' item.slug %}"><img height="150px" src="{{ item.image.url }}" style="object-fit: cover"> </a>
+                        <p>{{item.title}}</p>
+                    </th>
                 {% endfor %}
               </tr>
             </thead>

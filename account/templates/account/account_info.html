@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dettagli {{ object }}{% endblock title %}
+
+{% block content %}
+    <br>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{user}}</li>
+        </ol>
+    </nav>
+    <h1 class="title">
+        {{ object }}
+    </h1>
+    <div>
+        Indirizzo e-mail: <b>{{ object.email }}</b>
+    </div>
+
+    <br>
+
+
+{% endblock content %}
+

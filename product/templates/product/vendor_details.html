@@ -8,7 +8,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{user}}</li>
+        <li class="breadcrumb-item"><a href="{% url 'product:list_products' %}">Prodotti</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{object}}</li>
         </ol>
     </nav>
     <h1 class="title">
@@ -18,17 +19,29 @@
         Indirizzo e-mail: <b>{{ object.email }}</b>
     </div>
     <div>
-        Valutazione media: <b>{{average_rating}}/5</b><span style="color:#ff9900">&#9733;</span>
+        Valutazione media: <b>{{average_rating}}/5</b><span style="color:#ff9900">&#9733;</span> ({{total_vendor_reviews}} valutazioni)
     </div>
 
     <br>
     {% if request.user.is_authenticated %}
-        
+        {% if not already_reviewed and not self_review%}
             <a href="{% url 'product:vendor_review' object.pk%}">
                 <div>
-                    <button class="btn btn-outline-info">Leave a review!</button>
+                    <button class="btn btn-outline-info">Lascia una recensione!</button>
                 </div>
             </a>
+        
+        {% elif already_reviewed%}
+                <h5><strong>La tua recensione</strong></h5>
+                <div class="container card border-info">
+                    <div>{{my_review.writer}}</div>
+                    <div>{{my_review.created_at|date:"d F Y"}}</div>
+                    <div>{{ my_review.stars }}/5<span style="color:#ff9900">&#9733;</span></div><br>
+                </div>
+                <br>
+                <hr>
+        {% endif %}
+            
             
     {% endif %}
 

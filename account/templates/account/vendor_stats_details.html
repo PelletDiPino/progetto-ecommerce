@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dettagli {{ object }}{% endblock title %}
+
+{% block content %}
+    <br>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'product:list_products' %}">Prodotti</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{user}}</li>
+        </ol>
+    </nav>
+    <h1 class="title">
+        {{ object }}
+    </h1>
+    <div>
+        Indirizzo e-mail: <b>{{ object.email }}</b>
+    </div>
+    <div>
+        Valutazione media: <b>{{average_rating}}/5</b><span style="color:#ff9900">&#9733;</span> ({{total_vendor_reviews}} valutazioni)
+    </div>
+
+    <br>
+    <hr>
+    <h4>Statistiche globali</h4>
+    <p>Categoria più acquistata:  <span style="color:#0066ff"><b>{{most_purchased_category}}</b></span></p>
+    <p>Prezzo speso mediamente: <span style="color:#b30000"><b>{{avg_spent}} €</b> </span> </p>
+
+{% endblock content %}
+

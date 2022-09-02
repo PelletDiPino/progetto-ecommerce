@@ -44,9 +44,14 @@
         {% if user.is_authenticated %}
         
            <li class="nav-item dropdown list-unstyled">
-            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-toggle="dropdown"><strong>{{user}}</strong></a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" href="{% url 'product:vendor_details' user.id%}">Account e Info</a>
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" data-toggle="dropdown"><strong>Account</strong></a>
+            <div class="dropdown-menu dropdown-menu-right">
+              {% if request.user|has_group:'vendors' %}
+                <a class="dropdown-item" href="{% url 'account:account_vendor_details'%}">Account Venditore</a>
+              {% else %}
+                <a class="dropdown-item" href="{% url 'account:account_details'%}">Account e Info</a>
+              {% endif %}
+              
                 {% if request.user|has_group:'vendors' %}
                   <a class="dropdown-item" href="{% url 'account:my_sales' %}">Le mie vendite</a>
                 {% endif %}

@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
+<br>
     {% if user.is_authenticated %}
     <h1>Welcome, {{user.username}}!</h1>
     {% else %}
@@ -10,5 +11,45 @@
     {% endif %}
     <br>
     <a href="{% url 'product:list_products' %}" class="btn btn-info">Visualizza i prodotti</a>
+
+    <hr>
+    <br>
+    <br>
+    <div class="text-center">
+        <h2>Gli articoli più venduti</h2>
+        <p>Bestseller - ti presentiamo i titoli più venduti!</p>
+        <br>
+        <div class="row justify-content-md-center">
+            {% for product in top_sellers %}
+            <div class="col-lg-2">
+                <div>
+                    <a href={% url 'product:product_details' product.slug %}><img src="{{ product.image.url }}" class="card-img-top" style="height:9vw; object-fit: scale-down;"></a>
+                    <div class="card-body">
+                        <h6 class="card-title">{{ product.title }}</h6>
+                        <h6 class="card-subtitle mb-2" style="color:#b30000">€ {{ product.price }} </h6>
+                    </div>
+                </div>
+                <br>
+            </div>
+            
+            {% endfor %}
+        </div> 
+        <br>
+        <hr>
+        <br>
+        <div class="row justify-content-md-center">
+            <div class="col-13">
+                <a href="product/price_search/?min_price=1&max_price=29"><img class="ml-4" style="height:18vw; object-fit: scale-down;" src="{% static 'img/finoa29_1Blocco.jfif' %}"></a>
+                <a href="product/price_search/?min_price=1&max_price=49"><img class="ml-4" style="height:18vw; object-fit: scale-down;"src="{% static 'img/finoa49_2Blocco.jfif' %}"></a>
+            </div>
+            
+        </div>
+        <hr>
+    </div>
+    <br>
+    <br>
+    
+    
+    <h3></h3>
 {% endblock %}
 

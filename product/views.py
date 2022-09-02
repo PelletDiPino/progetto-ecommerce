@@ -93,34 +93,48 @@ class ProductDetails(DetailView):
         return context
 
 
+
 class VendorDetails(DetailView):
     model = User
     template_name = 'product/vendor_details.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context['is_reviewed'] = False
-
+        context['self_review'] = False
+        context['already_reviewed'] = False
+        context['my_review'] = None
         num_reviews = 0
         total_score = 0
+        
+        total_vendor_reviews = VendorReview.objects.filter(vendor_id=self.get_object().id)
+        context['total_vendor_reviews'] = len(total_vendor_reviews)
 
-        for score in VendorReview.objects.filter(vendor_id=self.get_object().id):
+        for review in VendorReview.objects.filter(vendor_id=self.get_object().id):
             num_reviews += 1
-            total_score += score.stars
+            total_score += review.stars
         try:
-            context['average_rating'] = int(total_score/num_reviews)
+            context['average_rating'] = round(float(total_score/num_reviews),2)
         except:
             context['average_rating'] = 0
 
         try:
             if self.request.user.is_authenticated:
-                vendorId = self.get_object().id
-                userId = User.objects.get(username=self.request.user).id
-                review = VendorReview.objects.filter(vendor_id=vendorId, user_id=userId)
+                vendor_id = self.get_object().id
+                user_id = User.objects.get(username=self.request.user).id
+                review = VendorReview.objects.get(writer_id=user_id, vendor_id=vendor_id)
 
-                if len(review) > 0:
-                    context['isReviewed'] = True
+                if review:
+                    context['my_review'] = review
+                    context['already_reviewed'] = True
+        except:
+            pass
+
+        try:
+            if self.request.user.is_authenticated:
+                vendor_id = self.get_object().id
+                writer_id = User.objects.get(username=self.request.user).id
+                if vendor_id == writer_id:
+                    context['self_review'] = True
         except:
             pass
 
@@ -139,13 +153,13 @@ def productReview(request, slug):
         form = ProductReviewForm(request.POST)
 
         if form.is_valid():
-            score = ProductReview()
-            score.stars = form.cleaned_data.get('review_value')
-            score.text = form.cleaned_data.get('review_text')
-            score.product = Product.objects.get(slug=slug)
-            score.writer = User.objects.get(username=request.user.username)
+            review = ProductReview()
+            review.stars = form.cleaned_data.get('review_value')
+            review.text = form.cleaned_data.get('review_text')
+            review.product = Product.objects.get(slug=slug)
+            review.writer = User.objects.get(username=request.user.username)
             
-            score.save()
+            review.save()
             messages.success(request,"Grazie per la recensione!")
             return redirect("product:product_details", slug)
 
@@ -157,19 +171,18 @@ def vendorReview(request, pk):
     ctx = {
         'form': VendorReviewForm(),
         'vendor': pk
-
     }
 
     if request.method == "POST":
         form = VendorReviewForm(request.POST)
 
         if form.is_valid():
-            score = VendorReview()
-            score.stars = form.cleaned_data.get('review_value')
-            score.writer = User.objects.get(username=request.user.username)
-            score.vendor = User.objects.get(id=pk)
+            review = VendorReview()
+            review.stars = form.cleaned_data.get('review_value')
+            review.writer = User.objects.get(username=request.user.username)
+            review.vendor = User.objects.get(id=pk)
 
-            score.save()
+            review.save()
             messages.success(request,"Grazie per la recensione!")
             return redirect("product:vendor_details", pk)
 
