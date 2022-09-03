@@ -7,8 +7,6 @@
 
 Nella cartella root del progetto:
 
-## dipendenze
-
     pipenv install
 
 attivazione shell di pipenv
@@ -16,6 +14,7 @@ attivazione shell di pipenv
     pipenv shell
 
 attivazione del server
+
     python manage.py runserver
     
  
