@@ -109,7 +109,13 @@ class AccountVendorDetails(GroupRequiredMixin, DetailView):
 
         title_count = Counter(titles_list)
 
-        context['most_purchased_category'] = title_count.most_common(1)[0][0]
+        most_purchased_categories = title_count.most_common(3)
+
+        products_titles = []
+        for elem in most_purchased_categories:
+            products_titles.append(elem[0])
+
+        context['most_purchased_categories'] = products_titles
 
         num_reviews = 0
         total_score = 0
