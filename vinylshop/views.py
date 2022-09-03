@@ -24,8 +24,10 @@ def home(request):
     preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(products_id)])
     top_sellers = Product.objects.filter(id__in=products_id).order_by(preserved)
     
+    new_products = Product.objects.all()[:5]
     ctx = {
-        'top_sellers':top_sellers
+        'top_sellers':top_sellers,
+        'new_products':new_products
     }
     return render(request, template_name='home.html', context=ctx)
 

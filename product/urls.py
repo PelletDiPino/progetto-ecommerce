@@ -1,7 +1,7 @@
 from django.urls import path
 
 from product.views import CreateProduct, ProductsListView, ProductDetails, \
-    VendorDetails, productReview, vendorReview,ProductDelete, BuyProduct, add_order, \
+    VendorDetails, product_review, vendor_review, ProductDelete, BuyProduct, add_order, \
     search, search_price, CategoryListView, category_filter_view
 
 app_name = 'product'
@@ -15,8 +15,8 @@ urlpatterns = [
     path('<slug:slug>/details', ProductDetails.as_view(), name='product_details'),
     path('<slug:slug>/buy', BuyProduct.as_view(), name='product_buy'),
     path('vendor_details/<int:pk>/', VendorDetails.as_view(), name='vendor_details'),
-    path('<slug:slug>/review', productReview, name='product_review'),
-    path('<int:pk>/vendor_review', vendorReview, name='vendor_review'),
+    path('<slug:slug>/review', product_review, name='product_review'),
+    path('<int:pk>/vendor_review', vendor_review, name='vendor_review'),
     path('<slug:slug>/add_order', add_order, name="add_order"),
     path('search/', search, name="search"),
     path('price_search/', search_price, name="price_search"),

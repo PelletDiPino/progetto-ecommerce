@@ -9,8 +9,8 @@
     <br>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{% url 'homepage' %}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{% url 'product:list_products' %}">Prodotti</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'homepage' %}" style="color:#33b5e5">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'product:list_products' %}" style="color:#33b5e5">Prodotti</a></li>
         <li class="breadcrumb-item active" aria-current="page">{{object.title}}</li>
         </ol>
     </nav>
@@ -28,8 +28,13 @@
             <div class="m-lg-3">
                 Vendor: <a href="{% url 'product:vendor_details' object.vendor.pk%}">{{ object.vendor }}</a>
                 <br>
+                {% if object.get_average_score == 0 %}
+                no ratings yet!
+                {% else %}
+                {{object.get_average_score}}/5<span style="color:#ff9900">&#9733;</span> ({{object.get_reviews_num}})
+                {% endif %}
                 <br>
-                
+                <br>
                 <h5>€ {{ object.price }}</h5>
                 <br>
                 <a href="{% url 'product:product_buy' object.slug%}" class="btn btn-info">Acquista</a>
@@ -42,14 +47,9 @@
         <p> {{ object.description }} </p> 
         <br>
         
-        <br><br><strong>Category</strong>: {{ object.category }}<br><br>
+        <br><strong>Categoria</strong>: {{ object.category }}<br><br>
         
-        Rating: 
-        {% if object.get_average_score == 0 %}
-            no ratings yet!
-            {% else %}
-            {{object.get_average_score}}/5<span style="color:#ff9900">&#9733;</span> ({{object.get_reviews_num}})
-        {% endif %}
+        
         <br><br><br>
         {% if similar_items|length != 0 and request.user.is_authenticated%}
         <h4 style="color:orange"><strong>Confronta con prodotti simili</strong> </h4>
@@ -92,7 +92,7 @@
           </table>
           {% endif %}
           <br>
-        <hr>
+        
         <br>
         <h3 class="text-info">Recensioni</h3>
         {% if not request.user.is_authenticated %}
@@ -141,5 +141,5 @@
         {% endif %}
         <br><br><br><br><br><br>
     </div>
-
+{{my_orders}}
 {% endblock content %}

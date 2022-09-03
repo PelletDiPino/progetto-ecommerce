@@ -39,12 +39,32 @@
         <br>
         <div class="row justify-content-md-center">
             <div class="col-13">
-                <a href="product/price_search/?min_price=1&max_price=29"><img class="ml-4" style="height:18vw; object-fit: scale-down;" src="{% static 'img/finoa29_1Blocco.jfif' %}"></a>
-                <a href="product/price_search/?min_price=1&max_price=49"><img class="ml-4" style="height:18vw; object-fit: scale-down;"src="{% static 'img/finoa49_2Blocco.jfif' %}"></a>
+                <a href="product/price_search/?min_price=1&max_price=29"><img class="ml-4" style="height:18vw; object-fit: scale-down; border: solid 1px; border-color: black;" src="{% static 'img/finoa29_1Blocco.jfif' %}"></a>
+                <a href="product/price_search/?min_price=1&max_price=49"><img class="ml-4" style="height:18vw; object-fit: scale-down;border: solid 1px; border-color: black;"src="{% static 'img/finoa49_2Blocco.jfif' %}"></a>
             </div>
             
         </div>
         <hr>
+        <br>
+        <br>
+        <h2>Le novità</h2>
+        <p>Ecco i prodotti inseriti di recente nel catalogo</p>
+        
+        <div class="row justify-content-md-center">
+            {% for product in new_products %}
+            <div class="col-lg-2">
+                <div>
+                    <a href={% url 'product:product_details' product.slug %}><img src="{{ product.image.url }}" class="card-img-top" style="height:9vw; object-fit: scale-down;"></a>
+                    <div class="card-body">
+                        <h6 class="card-title">{{ product.title }}</h6>
+                        <h6 class="card-subtitle mb-2" style="color:#b30000">€ {{ product.price }} </h6>
+                    </div>
+                </div>
+                <br>
+            </div>
+            
+            {% endfor %}
+        </div> 
     </div>
     <br>
     <br>

@@ -5,11 +5,13 @@
 
 {% block content %}
     <br>
-    <h5>You are about to remove this product from your sales:</h5>
-    <div class="card">
+    <h5>Vuoi rimuovere il seguente prodotto dalle tue vendite?</h5>
+    <div class="container card border-danger">
+        <br>
+        <img src="{{ product.image.url }}" class="justify-content-md-start" style="height:10vw; object-fit: scale-down;">
         <h6>{{ object.title }}</h6>
         <h6>€ {{object.price}}</h6>
-        <h6>Category: {{ object.category }}</h6>
+        <h6>Categoria: {{ object.category }}</h6>
         <p>{{ object.description }}</p>
     </div>
     

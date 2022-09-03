@@ -140,7 +140,7 @@ class VendorDetails(DetailView):
 
         return context 
 
-def productReview(request, slug):
+def product_review(request, slug):
     template = 'product/product_review.html'
     ctx = {
         'form': ProductReviewForm(),
@@ -166,7 +166,7 @@ def productReview(request, slug):
     return render(request, template_name=template, context=ctx)
 
 
-def vendorReview(request, pk):
+def vendor_review(request, pk):
     template = 'product/product_review.html'
     ctx = {
         'form': VendorReviewForm(),

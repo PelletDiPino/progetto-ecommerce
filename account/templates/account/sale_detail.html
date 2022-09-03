@@ -5,7 +5,15 @@
 
 
 {% block content %}
+
     <br>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'homepage' %}" style="color:#33b5e5">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'account:my_sales' %}" style="color:#33b5e5">Le mie vendite</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{object.title}}</li>
+        </ol>
+    </nav>
     <h3>
         Prodotto:
        {{ object.title }}

@@ -4,8 +4,14 @@
 {% block title %}My sales{% endblock %}
 
 {% block content %}
-
-    <h1 class="mb-4">My sales</h1>
+    <br>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'homepage' %}" style="color:#33b5e5">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Le mie vendite</li>
+        </ol>
+    </nav>
+    <h1 class="mb-4">Elenco prodotti in vendita</h1>
     {% if not object_list %}
         No sales yet
     {% endif %}
@@ -21,7 +27,7 @@
     </div>
     <div>
         <a href="{% url 'product:create_product' %}">
-            <button class="btn btn-primary mt-3">Add Sale</button>
+            <button class="btn btn-primary mt-3">Aggiungi Vendita</button>
         </a>
     </div>
 
