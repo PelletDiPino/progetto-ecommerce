@@ -1,5 +1,5 @@
 
-# Installatione & Setup
+# Installazione & Setup
 
 ## Requirements
  - Python 3.10
